@@ -1,0 +1,24 @@
+test_unit (unittest.loader._FailedTest) ... ERROR
+
+======================================================================
+ERROR: test_unit (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_unit
+Traceback (most recent call last):
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/Users/javierng/Documents/GitHub/Final-Project-v1/project/tests/test_unit.py", line 22, in <module>
+    spec.loader.exec_module(featured)
+  File "/Users/javierng/Documents/GitHub/Final-Project-v1/project/backend/src/featured_prototype.py", line 606, in <module>
+    csv_path: Path = LOG_CSV
+NameError: name 'LOG_CSV' is not defined
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+Report saved to: /Users/javierng/Documents/GitHub/Final-Project-v1/project/tests/reports/unit_test_report_20260319_203822.txt

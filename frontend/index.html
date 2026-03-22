@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calorie Counter Prototype</title>
+    <style>
+      :root {
+        --bg: #f2f0ea;
+        --card: #ffffff;
+        --ink: #1f1d1a;
+        --accent: #2e6b4e;
+        --muted: #6d6a63;
+        --border: #e1ddd5;
+      }
+      body {
+        margin: 0;
+        font-family: "Georgia", "Times New Roman", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #f7f2e9, var(--bg));
+      }
+      header {
+        padding: 32px 24px 12px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        letter-spacing: 0.5px;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+      main {
+        display: grid;
+        gap: 24px;
+        padding: 24px;
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      input[type="file"] {
+        padding: 8px;
+      }
+      button {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #f2f0ea;
+        color: var(--ink);
+        border: 1px solid var(--border);
+      }
+      .result-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .preview {
+        margin-top: 16px;
+        display: none;
+        width: 360px;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+      @media (max-width: 600px) {
+        .preview {
+          width: 100%;
+          height: 220px;
+        }
+      }
+      .result-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .label {
+        font-weight: 600;
+      }
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .status {
+        margin-top: 12px;
+        color: var(--muted);
+      }
+      .trend {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .trend-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .trend-item {
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 6px 8px;
+        border-radius: 10px;
+      }
+      .trend-item:hover {
+        background: #f6f2ea;
+      }
+      .log-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .log-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fffaf1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .log-content {
+        display: grid;
+        gap: 4px;
+      }
+      .advice-box {
+        margin-top: 12px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fcf7ed;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+      .signal-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .signal-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fffdf8;
+      }
+      .missing-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .missing-item {
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Calorie Counter Project</h1>
+      <p>Upload a meal photo to estimate calories and log your entry.</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>Upload</h2>
+        <div class="actions">
+          <input type="file" id="imageInput" accept="image/*" />
+          <label>
+            Portion (g)
+            <input type="number" id="portionInput" value="100" min="1" step="1" />
+          </label>
+          <label>
+            Log date
+            <input type="date" id="dateInput" />
+          </label>
+          <button id="predictBtn">Predict</button>
+          <button id="refreshBtn" class="secondary">Refresh Trend</button>
+        </div>
+        <div id="status" class="status"></div>
+        <img id="preview" class="preview" alt="Uploaded preview" />
+        <div id="results" class="result-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>7-day trend</h2>
+        <div id="trend" class="trend">Loading...</div>
+        <div id="trendList" class="trend-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>7-day advice</h2>
+        <div id="adviceStatus" class="status">Loading advice...</div>
+        <div id="adviceText" class="advice-box">No advice available yet.</div>
+        <div id="signalList" class="signal-list"></div>
+        <div id="missingTitle" class="status"></div>
+        <div id="missingList" class="missing-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Daily log</h2>
+        <div id="dailyTitle" class="status">Select a date to view entries.</div>
+        <div id="dailyList" class="log-list"></div>
+      </section>
+    </main>
+
+    <script>
+      let lastImageId = null;
+
+      async function fetchTrend() {
+        const res = await fetch("/api/trends");
+        const data = await res.json();
+        const trend = document.getElementById("trend");
+        const avg7d = (data.total_7d / 7).toFixed(1);
+        trend.textContent = `${data.count} items, 7-day average ${avg7d} kcal/day`;
+        const list = document.getElementById("trendList");
+        list.innerHTML = "";
+        data.daily.forEach((day) => {
+          const row = document.createElement("div");
+          row.className = "trend-item";
+          row.innerHTML = `<span>${day.day}</span><span>${day.total_calories} kcal</span>`;
+          row.addEventListener("click", () => fetchDaily(day.day));
+          list.appendChild(row);
+        });
+        fetchAdvice();
+      }
+
+      async function fetchAdvice() {
+        const status = document.getElementById("adviceStatus");
+        const adviceText = document.getElementById("adviceText");
+        const signalList = document.getElementById("signalList");
+        const missingTitle = document.getElementById("missingTitle");
+        const missingList = document.getElementById("missingList");
+
+        status.textContent = "Loading advice...";
+        signalList.innerHTML = "";
+        missingTitle.textContent = "";
+        missingList.innerHTML = "";
+
+        const res = await fetch("/api/advice");
+        if (!res.ok) {
+          status.textContent = "Unable to load advice.";
+          adviceText.textContent = "Advice is unavailable right now.";
+          return;
+        }
+
+        const data = await res.json();
+        status.textContent =
+          data.source === "model"
+            ? `Generated using ${data.model_id}`
+            : "Generated using fallback rules";
+        adviceText.textContent = data.advice || "No advice available.";
+
+        (data.signals || []).forEach((signal) => {
+          const row = document.createElement("div");
+          row.className = "signal-item";
+          row.innerHTML = `
+            <div><strong>${signal.category}</strong> · ${signal.status}</div>
+            <div class="meta">${signal.detail}</div>
+          `;
+          signalList.appendChild(row);
+        });
+
+        const missingFoods = data.summary?.missing_macro_foods || [];
+        if (missingFoods.length) {
+          missingTitle.textContent =
+            "Excluded from macro-based advice because no macro data was available:";
+          missingFoods.forEach((item) => {
+            const row = document.createElement("div");
+            row.className = "missing-item";
+            row.innerHTML = `
+              <div><strong>${item.food_type}</strong></div>
+              <div class="meta">${item.count} logged entr${item.count === 1 ? "y" : "ies"}</div>
+            `;
+            missingList.appendChild(row);
+          });
+        }
+      }
+
+      async function fetchDaily(day) {
+        const res = await fetch(`/api/logs?day=${day}`);
+        const data = await res.json();
+        const title = document.getElementById("dailyTitle");
+        const list = document.getElementById("dailyList");
+        title.textContent = `${data.day} — ${data.count} entries`;
+        list.innerHTML = "";
+        if (!data.items.length) {
+          list.innerHTML = "<div class=\"status\">No entries.</div>";
+          return;
+        }
+        data.items.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "log-item";
+          const portionText = item.portion_grams ? `${item.portion_grams} g` : "N/A";
+          const totalText =
+            item.calories_total !== null ? `${item.calories_total} kcal` : "N/A";
+          row.innerHTML = `
+            <div class="log-content">
+              <div><strong>${item.food_type}</strong> (${item.label})</div>
+              <div class="meta">${item.timestamp} · ${portionText} · ${totalText}</div>
+            </div>
+            <button class="secondary" data-id="${item.id}">Delete</button>
+          `;
+          row.querySelector("button").addEventListener("click", () =>
+            deleteLog(item.id, data.day)
+          );
+          list.appendChild(row);
+        });
+      }
+
+      async function deleteLog(id, day) {
+        const confirmMsg = "Delete this entry? This cannot be undone.";
+        if (!window.confirm(confirmMsg)) {
+          return;
+        }
+        const res = await fetch(`/api/logs/${id}`, { method: "DELETE" });
+        if (!res.ok) {
+          alert("Failed to delete entry.");
+          return;
+        }
+        fetchDaily(day);
+        fetchTrend();
+      }
+
+      async function predict() {
+        const input = document.getElementById("imageInput");
+        const status = document.getElementById("status");
+        const results = document.getElementById("results");
+        const preview = document.getElementById("preview");
+        results.innerHTML = "";
+        preview.style.display = "none";
+        status.textContent = "Processing...";
+
+        if (!input.files.length) {
+          status.textContent = "Please select an image first.";
+          return;
+        }
+
+        const form = new FormData();
+        form.append("file", input.files[0]);
+
+        const res = await fetch("/api/predict", { method: "POST", body: form });
+        const data = await res.json();
+
+        if (data.blocked) {
+          status.textContent = data.message || "Non-food detected.";
+          return;
+        }
+
+        lastImageId = data.image_id;
+        if (data.image_url) {
+          preview.src = data.image_url;
+          preview.style.display = "block";
+        }
+        if (data.classifier_used === "fallback_general") {
+          console.log(
+            "Fallback general classifier used because the primary classifier confidence was below the trigger threshold."
+          );
+        } else {
+          console.log("Primary Asian food classifier used for this prediction.");
+        }
+        status.textContent = data.low_conf
+          ? "Low confidence — consider verifying."
+          : "Select the best match to log.";
+
+        const portion = Number(document.getElementById("portionInput").value || 100);
+        const logDate =
+          document.getElementById("dateInput").value ||
+          new Date().toISOString().slice(0, 10);
+        data.candidates.forEach((item) => {
+          const probabilityText = `${(item.prob * 100).toFixed(1)}%`;
+          const portionCalories =
+            item.calories_per_100g > 0
+              ? ((portion / 100) * item.calories_per_100g).toFixed(1)
+              : "N/A";
+          const row = document.createElement("div");
+          row.className = "result-item";
+          row.innerHTML = `
+            <div>
+              <div class="label">${item.rank}. ${item.label}</div>
+              <div class="meta">${item.food_type} · ${item.calories_per_100g} kcal/100g · ${portionCalories} kcal/${portion}g · ${probabilityText}</div>
+            </div>
+            <button data-choice="${item.rank}">Log</button>
+          `;
+          row.querySelector("button").addEventListener("click", () =>
+            logChoice(item.rank, item.label, portionCalories, portion, logDate)
+          );
+          results.appendChild(row);
+        });
+
+        const noneRow = document.createElement("div");
+        noneRow.className = "result-item";
+        noneRow.innerHTML = `
+          <div>
+            <div class="label">None of the above</div>
+            <div class="meta">Log as unknown</div>
+          </div>
+          <button data-choice="0">Log</button>
+        `;
+        noneRow.querySelector("button").addEventListener("click", () =>
+          logChoice(0, "unknown", "N/A", portion, logDate)
+        );
+        results.appendChild(noneRow);
+      }
+
+      async function logChoice(choice, label, caloriesTotal, portion, logDate) {
+        if (!lastImageId) return;
+        const confirmMsg =
+          choice === 0
+            ? `Log as unknown with portion ${portion}g on ${logDate}?`
+            : `Log ${label} with portion ${portion}g (${caloriesTotal} kcal) on ${logDate}?`;
+        if (!window.confirm(confirmMsg)) {
+          return;
+        }
+        const res = await fetch(
+          `/api/log?image_id=${lastImageId}&choice=${choice}&portion_grams=${portion}&log_date=${logDate}`,
+          {
+          method: "POST",
+          }
+        );
+        const data = await res.json();
+        document.getElementById("status").textContent = data.message || "Logged.";
+        lastImageId = null;
+        fetchTrend();
+      }
+
+      document.getElementById("predictBtn").addEventListener("click", predict);
+      document.getElementById("refreshBtn").addEventListener("click", fetchTrend);
+      document.getElementById("dateInput").value = new Date()
+        .toISOString()
+        .slice(0, 10);
+
+      fetchTrend();
+    </script>
+  </body>
+</html>

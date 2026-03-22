@@ -1,0 +1,101 @@
+test_delete_log_removes_entry (test_unit.ApiTests) ... ok
+test_index_serves_frontend (test_unit.ApiTests) ... ok
+test_log_rejects_invalid_input (test_unit.ApiTests) ... ok
+test_log_rejects_missing_prediction_and_bad_choice (test_unit.ApiTests) ... ok
+test_log_selected_choice_persists_entry (test_unit.ApiTests) ... ERROR
+test_log_unknown_choice (test_unit.ApiTests) ... ok
+test_logs_reject_invalid_day (test_unit.ApiTests) ... ok
+test_predict_blocks_non_food (test_unit.ApiTests) ... ok
+test_predict_returns_candidates_and_image_preview (test_unit.ApiTests) ... ok
+test_trends_and_daily_logs (test_unit.ApiTests) ... ok
+test_daily_totals_use_calories_total_when_present (test_unit.DatabaseTests) ... ok
+test_nutrition_seed_and_log (test_unit.DatabaseTests) ... ok
+test_rough_cal_estimate_prefers_semantic_key (test_unit.DatabaseTests) ... ok
+test_encrypt_roundtrip (test_unit.EncryptionTests) ... ok
+
+======================================================================
+ERROR: test_log_selected_choice_persists_entry (test_unit.ApiTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/javierng/Documents/GitHub/Final-Project-v1/project/tests/test_unit.py", line 292, in test_log_selected_choice_persists_entry
+    response = self.client.post(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/testclient.py", line 546, in post
+    return super().post(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/httpx/_client.py", line 1144, in post
+    return self.request(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/testclient.py", line 445, in request
+    return super().request(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/testclient.py", line 348, in handle_request
+    raise exc
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/testclient.py", line 345, in handle_request
+    portal.call(self.app, scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/anyio/from_thread.py", line 334, in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/anyio/from_thread.py", line 259, in _call_func
+    retval = await retval_or_awaitable
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/fastapi/applications.py", line 1160, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/fastapi/routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/fastapi/routing.py", line 116, in app
+    response = await f(request)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/fastapi/routing.py", line 670, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/fastapi/routing.py", line 326, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+  File "/opt/miniconda3/envs/cm3070/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/Users/javierng/Documents/GitHub/Final-Project-v1/project/backend/src/app.py", line 190, in log_choice
+    today = datetime.now().date().isoformat()
+AttributeError: module 'datetime' has no attribute 'now'
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.068s
+
+FAILED (errors=1)
+
+Report saved to: /Users/javierng/Documents/GitHub/Final-Project-v1/project/tests/reports/unit_test_report_20260312_000124.txt

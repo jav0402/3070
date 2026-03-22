@@ -1,0 +1,21 @@
+test_delete_log_removes_entry (test_unit.ApiTests) ... ok
+test_index_serves_frontend (test_unit.ApiTests) ... ok
+test_log_rejects_invalid_input (test_unit.ApiTests) ... ok
+test_log_rejects_missing_prediction_and_bad_choice (test_unit.ApiTests) ... ok
+test_log_selected_choice_persists_entry (test_unit.ApiTests) ... ok
+test_log_unknown_choice (test_unit.ApiTests) ... ok
+test_logs_reject_invalid_day (test_unit.ApiTests) ... ok
+test_predict_blocks_non_food (test_unit.ApiTests) ... ok
+test_predict_returns_candidates_and_image_preview (test_unit.ApiTests) ... ok
+test_trends_and_daily_logs (test_unit.ApiTests) ... ok
+test_daily_totals_use_calories_total_when_present (test_unit.DatabaseTests) ... ok
+test_nutrition_seed_and_log (test_unit.DatabaseTests) ... ok
+test_rough_cal_estimate_prefers_semantic_key (test_unit.DatabaseTests) ... ok
+test_encrypt_roundtrip (test_unit.EncryptionTests) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.062s
+
+OK
+
+Report saved to: /Users/javierng/Documents/GitHub/Final-Project-v1/project/tests/reports/unit_test_report_20260312_000239.txt
