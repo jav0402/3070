@@ -1,0 +1,21 @@
+name: cm3070
+channels:
+  - pytorch
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch=2.4
+  - torchvision
+  - pillow
+  - numpy
+  - pip
+  - pip:
+      - opencv-python
+      - sentence-transformers
+      - transformers
+      - cryptography
+      - timm
+      - fastapi
+      - uvicorn[standard]
+      - python-multipart
